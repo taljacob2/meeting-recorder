@@ -1,28 +1,37 @@
-# Specify the Execution times
-$TriggerTimes = @(
-    # '4:12:00pm',
-    # '4:12:10pm',
-    # '4:12:20pm',
-    # '2:00:00pm',
-    '11:11:30am'
+param (
+  [parameter(mandatory)][DateTime[]]$StartDateList
 )
 
 # Sort in chronologic order
 #  assuming the times format are the same
-$TriggerTimes = $TriggerTimes | Sort-Object
+$StartDateList = $StartDateList | Sort-Object
 
-foreach ($t in $TriggerTimes)
-{
-    if((Get-Date -Date $t) -lt (Get-Date))
-    {
-        "Belong to the past: '$t'"
-        continue
+$jobs = @()
+
+# See https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/start-job
+# See https://learn.microsoft.com/en-us/powershell/module/threadjob/start-threadjob
+foreach ($startDate in $StartDateList) {
+
+    # Open thread here.
+    $jobs += Start-Job -Name $startDate -ScriptBlock {
+        if(($using:startDate) -lt (Get-Date))
+        {
+            Write-Output "Belong to the past: '$using:startDate'"
+            continue
+        }
+
+        # Sleep for the remaining time
+        ($using:startDate) - (Get-Date) | Start-Sleep
+
+        # Trigger event
+        #  insert your code here
+        Write-Output "# TriggerTime: '$using:startDate' - Executing my code here!"
     }
+}
 
-    # Sleep for the remaining time
-    (Get-Date -Date $t) - (Get-Date) | Start-Sleep
+Write-Host "Jobs started..."
+Wait-Job -Job $jobs
 
-    # Trigger event
-    #  insert your code here
-    "# TriggerTime: '$t' - Executing my code here!"
+foreach ($job in $jobs) {
+    Receive-Job -Job $job
 }
