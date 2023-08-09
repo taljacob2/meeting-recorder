@@ -1,6 +1,14 @@
 param (
-  [parameter(mandatory)][DateTime[]]$StartDateList
+    [parameter(mandatory)][DateTime[]]$StartDateList,
+    [parameter(mandatory)][string]$Url
 )
+
+# Imports
+. "$PSScriptRoot\misc.ps1"
+
+# ------------------ Code ------------------
+
+Launch-ZoomMeeting $Url
 
 # Sort in chronologic order
 #  assuming the times format are the same
