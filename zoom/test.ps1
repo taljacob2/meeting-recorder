@@ -4,7 +4,7 @@ $TriggerTimes = @(
     # '4:12:10pm',
     # '4:12:20pm',
     # '2:00:00pm',
-    '9:06:00pm'
+    '11:00:50am'
 )
 
 # Sort in chronologic order
@@ -17,7 +17,7 @@ foreach ($t in $TriggerTimes)
     if((Get-Date) -lt (Get-Date -Date $t))
     {
         # Sleeping
-        while ((Get-Date -Date $t) -gt (Get-Date))
+        if ((Get-Date -Date $t) -gt (Get-Date))
         {
             # Sleep for the remaining time
             (Get-Date -Date $t) - (Get-Date) | Start-Sleep
