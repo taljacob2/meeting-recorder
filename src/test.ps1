@@ -8,7 +8,8 @@ param (
 
 # ------------------ Code ------------------
 
-Launch-ZoomMeeting $Url
+# Launch-ZoomMeeting $Url
+RunWith-NirCmd "setcursor 1400 890"
 
 # Sort in chronologic order
 #  assuming the times format are the same
