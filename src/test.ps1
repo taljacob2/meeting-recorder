@@ -41,9 +41,6 @@ param (
 
 # ------------------ Code ------------------
 
-# Launch-ZoomMeeting $Url
-RunWith-NirCmd "setcursor 1400 890"
-
 # Sort in chronologic order
 #  assuming the times format are the same
 $StartDateList = $StartDateList | Sort-Object
@@ -56,7 +53,7 @@ foreach ($startDate in $StartDateList) {
 
     # Open thread here.
     $jobs += Start-Job -Name $startDate -ScriptBlock {
-        if(($using:startDate) -lt (Get-Date))
+        if(($using:startDate) -lt (Get-Date).AddSeconds(-3))
         {
             Write-Output "Belong to the past: '$using:startDate'"
             continue
@@ -66,8 +63,12 @@ foreach ($startDate in $StartDateList) {
         ($using:startDate) - (Get-Date) | Start-Sleep
 
         # Trigger event
-        #  insert your code here
-        Write-Output "# TriggerTime: '$using:startDate' - Executing my code here!"
+        Write-Output "# TriggerTime: '$using:startDate' - Executing job!"
+
+        ${function:Launch-Chrome} = [scriptblock]::Create(${using:function:Launch-Chrome})
+
+        ${function:Launch-ZoomMeeting} = [scriptblock]::Create(${using:function:Launch-ZoomMeeting})
+        Launch-ZoomMeeting $using:Url
     }
 }
 
