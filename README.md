@@ -21,5 +21,5 @@ So make sure you download and install them, before you run the scripts.
 [Google Chrome]: https://www.google.com/intl/en/chrome/
 [Apowersoft]: https://www.apowersoft.com/free-online-screen-recorder
 
-[Zoom Script]: zoom/zoom-meeting-recorder.vbs
-[Google Meets Script]: google-meets/google-meets-recorder.vbs
+[Zoom Script]: src/zoom-meeting-recorder.vbs
+[Google Meets Script]: src/google-meets-recorder.vbs
