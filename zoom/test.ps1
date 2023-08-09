@@ -4,7 +4,7 @@ $TriggerTimes = @(
     # '4:12:10pm',
     # '4:12:20pm',
     # '2:00:00pm',
-    '11:00:50am'
+    '11:11:30am'
 )
 
 # Sort in chronologic order
@@ -13,20 +13,16 @@ $TriggerTimes = $TriggerTimes | Sort-Object
 
 foreach ($t in $TriggerTimes)
 {
-    # Past time ?
-    if((Get-Date) -lt (Get-Date -Date $t))
+    if((Get-Date -Date $t) -lt (Get-Date))
     {
-        # Sleeping
-        if ((Get-Date -Date $t) -gt (Get-Date))
-        {
-            # Sleep for the remaining time
-            (Get-Date -Date $t) - (Get-Date) | Start-Sleep
-            echo "here"
-        }
+        "Belong to the past: '$t'"
+        continue
+    }
 
-        # Trigger event
-        #  insert your code here
-        "# TriggerTime: '$t' - Executing my code here!"
+    # Sleep for the remaining time
+    (Get-Date -Date $t) - (Get-Date) | Start-Sleep
 
-    }else{"Belong to the past: '$t'"}
+    # Trigger event
+    #  insert your code here
+    "# TriggerTime: '$t' - Executing my code here!"
 }
